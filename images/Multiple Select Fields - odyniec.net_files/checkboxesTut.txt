@@ -1,0 +1,100 @@
+Single check box
+
+Let’s create a simple form with a single check box.
+<form action="checkbox-form.php" method="post">
+    Do you need wheelchair access?
+    <input type="checkbox" name="formWheelchair" value="Yes" />
+    <input type="submit" name="formSubmit" value="Submit" />
+</form>
+
+
+In the PHP script (checkbox-form.php), we can get the submitted option from the $_POST array. If $_POST['formWheelchair'] is “Yes”, then the box was checked. If the check box was not checked, $_POST['formWheelchair'] won’t be set.
+
+Here’s an example of PHP handling the form:
+<?php
+ 
+if(isset($_POST['formWheelchair']) && 
+   $_POST['formWheelchair'] == 'Yes') 
+{
+    echo "Need wheelchair access.";
+}
+else
+{
+    echo "Do not Need wheelchair access.";
+}    
+ 
+?>
+
+The value of $_POST[‘formSubmit’] is set to ‘Yes’ since the value attribute in the input tag is ‘Yes’.
+<input type="checkbox" name="formWheelchair" value="Yes" />
+
+You can set the value to be a ‘1’ or ‘on’ instead of ‘Yes’. Make sure the check in the PHP code is also updated accordingly.
+Check box group
+
+There are often situations where a group of related checkboxes are needed on a form. The advantage of check box group is that the user can select more than one options. (unlike a radio group where only one option could be selected from a group).
+
+Let’s build on the above example and give the user a list of buildings that he is requesting door access to.
+<form action="checkbox-form.php" method="post">
+ 
+Which buildings do you want access to?<br />
+<input type="checkbox" name="formDoor[]" value="A" />Acorn Building<br />
+<input type="checkbox" name="formDoor[]" value="B" />Brown Hall<br />
+<input type="checkbox" name="formDoor[]" value="C" />Carnegie Complex<br />
+<input type="checkbox" name="formDoor[]" value="D" />Drake Commons<br />
+<input type="checkbox" name="formDoor[]" value="E" />Elliot House
+ 
+<input type="submit" name="formSubmit" value="Submit" />
+ 
+</form>
+
+Please note that the checkboxes have the exact same name ( formDoor[ ] ). Also notice that each name ends in [ ]. Using the same name indicates that these checkboxes are all related. Using [ ] indicates that the selected values will be accessed by PHP script as an array. That is, $_POST[‘formDoor’] won’t return a single string as in the example above; it will instead return an array consisting of all the values of the checkboxes that were checked.
+
+For instance, if I checked all the boxes, $_POST['formDoor'] would be an array consisting of: {A,B,C,D,E}. Here’s an example of how to retrieve the array of values and display them:
+<?php
+  $aDoor = $_POST['formDoor'];
+  if(empty($aDoor)) 
+  {
+    echo("You didn't select any buildings.");
+  } 
+  else
+  {
+    $N = count($aDoor);
+ 
+    echo("You selected $N door(s): ");
+    for($i=0; $i < $N; $i++)
+    {
+      echo($aDoor[$i] . " ");
+    }
+  }
+?>
+
+If no checkboxes are checked, $_POST['formDoor'] will not be set, so use the “empty” function to check for this case. If it’s not empty, then this example just loops through the array ( using the “count” function to determine the size of the array ) and prints out the building codes for the buildings that were checked.
+
+If the check box against ‘Acorn Building’ is checked, then the array will contain value ‘A’. similarly, if ‘Carnegie Complex’ is selected, the array will contain C.
+Check whether a particular option is checked
+
+It is often required to check whether a particular option is checked out of all the available items in the checkbox group. Here is the function to do the check:
+function IsChecked($chkname,$value)
+    {
+        if(!empty($_POST[$chkname]))
+        {
+            foreach($_POST[$chkname] as $chkval)
+            {
+                if($chkval == $value)
+                {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+In order to use it, just call IsChecked(chkboxname,value). For example,
+if(IsChecked('formDoor','A'))
+{
+//do somthing ...
+}
+//or use in a calculation ...
+ 
+$price += IsChecked('formDoor','A') ? 10 : 0;
+$price += IsChecked('formDoor','B') ? 20 : 0;

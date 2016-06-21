@@ -1,0 +1,320 @@
+http://www.html-form-guide.com/php-form/php-form-checkbox.html
+http://odyniec.net/articles/multiple-select-fields/
+Multiple Select Fields
+
+We humans are greedy creatures. When we're placed in front of a choice to select one of many options, we start complaining — Hey, why can't I pick two? Why not five? Can't I have both pineapple AND pepperoni on my pizza?
+
+This is why multiple selection form fields had to be invented. Let's examine a few examples of how multiple select fields can be implemented in HTML and PHP (as well as some JavaScript).
+Traditional HTML/CSS techniques
+Checkboxes
+
+The first obvious option that we have is the good old set of checkboxes:
+
+What do you like on your pizza?
+Cheese
+Olives
+Pepperoni
+Anchovies
+T@N@NG@Z@UNI
+The HTML code behind this is pretty straightforward:
+
+<input id="cheese" type="checkbox" name="ingredients[]" value="Cheese" />
+<label for="cheese">Cheese</label>
+<br />
+<input id="olives" type="checkbox" name="ingredients[]" value="Olives" />
+<label for="olives">Olives</label>
+<br />
+<input id="pepperoni" type="checkbox" name="ingredients[]" value="Pepperoni" />
+<label for="pepperoni">Pepperoni</label>
+<br />
+<input id="anchovies" type="checkbox" name="ingredients[]" value="Anchovies" />
+<label for="anchovies">Anchovies</label>
+
+You might notice that all the checkboxes share the same name ingredients[]. The square brackets allow us to easily parse the collected form data in PHP. We'll get to that later.
+
+Lists of checkboxes have the advantage of being simple to implement and easy to use for the end user. But, they do not scale well — as long as there are just a few options, it's fine, but if you need to let the user select a few choices from dozens of options (a list of countries, for instance), you end up with a really, reeeally long list, and your form gets huge. And if there's one thing people hate, it's huge forms.
+
+There are some workarounds for long lists of checkboxes, like placing the checkboxes in several columns:
+Cheese
+Olives
+Pepperoni
+Anchovies
+Mushrooms
+Green Pepper
+Bacon
+Ham
+
+This can be accomplished with floating divs:
+
+<div class="container">
+ <div style="width: 12em; float: left;">
+  <input id="cheese" type="checkbox" name="ingredients[]" value="Cheese" />
+  ...
+ </div>
+   
+ <div style="width: 12em; float: left;">
+  <input id="mushrooms" type="checkbox" name="ingredients[]" value="Mushrooms" />
+  ...
+ </div>
+</div>
+
+Another workaround is to put all the checkboxes in a scrollable div:
+Cheese
+Olives
+Pepperoni
+Anchovies
+Mushrooms
+Green Pepper
+Bacon
+Ham
+
+For this variant, all we need to do is give the div some dimensions and set its CSS overflow property to auto:
+
+<div style="height: 6em; width: 12em; overflow: auto;">
+ <input id="cheese" type="checkbox" name="ingredients[]" value="Cheese" />
+ <label for="cheese">Cheese</label>
+ <br />
+ ...
+</div>
+
+With the scrollable list, we can keep the form small even with a hundred options. But (there's always a but), this solution has one major drawback — the user can't see all the already checked options at once without scrolling the box.
+Multiple selection list box
+
+There is a HTML element specifically designed for multiple selection. The select element, usually used to produce a drop down list, can be transformed into a multiple selection box with the addition of the multiple attribute:
+
+Here's the code:
+
+<select name="ingredients[]" multiple="multiple" size="5">
+ <option value="Cheese">Cheese</option>
+ <option value="Olives">Olives</option>
+ <option value="Pepperoni">Pepperoni</option>
+ ...
+</select>
+
+Apparently, this method suffers from the same problem as the scrollable checkbox list — you need to scroll the box to see all your choices. Oh well.
+Fancy JavaScript method
+
+In light of the above, the optimal solution should be both compact and let us see all the selected options without scrolling. We can't accomplish this with just HTML and CSS, but, hey, we have JavaScript, right?
+
+Let's use our imagination here. To keep the list of options condensed, we can use a drop down box. Everytime the user selects an option, we'll do some JavaScript-dynamic-HTML work to add the selected option to a list placed above the box. This way, all our choices will be visible at the same time.
+
+Can you picture it? If not, don't worry, here's a working example:
+
+    Cheese
+    Ham
+    Mushrooms
+
+We're also able to remove the already selected options by clicking them on the list. Oh, and one more thing — when adding an option, we make sure it's not already listed (so that we don't end up with too much bacon on our pizza).
+
+With some CSS styling and an image here and there, our solution can get a more attractive look:
+
+    Cheese
+    Ham
+    Mushrooms
+
+Add
+
+Nice, isn't it? Here's the HTML:
+
+<ul>
+ <li onclick="this.parentNode.removeChild(this);">
+  <input type="hidden" name="ingredients[]" value="Cheese" />
+  Cheese
+ </li>
+ <li onclick="this.parentNode.removeChild(this);">
+  <input type="hidden" name="ingredients[]" value="Ham" />
+  Ham
+ </li>
+ <li onclick="this.parentNode.removeChild(this);">
+  <input type="hidden" name="ingredients[]" value="Mushrooms" />
+  Mushrooms
+ </li>
+</ul>
+<select onchange="selectIngredient(this);">
+ <option value="Cheese">Cheese</option>
+ <option value="Olives">Olives</option>
+ <option value="Pepperoni">Pepperoni</option>
+ ...
+</select>
+
+The structure here is quite simple — an unordered list and a drop down select field. One thing worth noting is how we store the selected values to have them sent to the server when the form is submitted. For this purpose, inside every list item there's a hidden input element with the appropriate value.
+
+All the action happens in the JavaScript function selectIngredient:
+
+function selectIngredient(select)
+{
+  var option = select.options[select.selectedIndex];
+  var ul = select.parentNode.getElementsByTagName('ul')[0];
+     
+  var choices = ul.getElementsByTagName('input');
+  for (var i = 0; i < choices.length; i++)
+    if (choices[i].value == option.value)
+      return;
+     
+  var li = document.createElement('li');
+  var input = document.createElement('input');
+  var text = document.createTextNode(option.firstChild.data);
+     
+  input.type = 'hidden';
+  input.name = 'ingredients[]';
+  input.value = option.value;
+
+  li.appendChild(input);
+  li.appendChild(text);
+  li.setAttribute('onclick', 'this.parentNode.removeChild(this);');     
+    
+  ul.appendChild(li);
+}
+
+If you don't like dealing directly with DOM, here's a jQuery equivalent:
+
+function selectIngredient(select)
+{
+  var $ul = $(select).prev('ul');
+   
+  if ($ul.find('input[value=' + $(select).val() + ']').length == 0)
+    $ul.append('<li onclick="$(this).remove();">' +
+      '<input type="hidden" name="ingredients[]" value="' + 
+      $(select).val() + '" /> ' +
+      $(select).find('option[selected]').text() + '</li>');
+}
+
+The function checks if the selected option is not already on the list — it does that by looking for a hidden input element with the selected value. If it fails to find one, it creates a new list item for the chosen option (with a new hidden input inside) and appends it to the list.
+
+Note that the hidden input elements are named ingredients[], just like the checkboxes and the multiple selection list box in the previous examples. This will allow us to use the same PHP code to deal with the submitted data.
+Processing results
+
+As I mentioned, using the square brackets in the input/select name makes it easier to process the collected form data in PHP. That's because it automatically produces an array for us to work with. You can read more about this in the PHP FAQ.
+
+Assuming we get our data via $_POST, we can process each selected option with the following foreach loop:
+
+foreach ($_POST['ingredients'] as $ingredient) {
+  // do something with $ingredient
+}
+
+The "do something" part might be whatever you want to do with $ingredient — store it in a database, save it in a file, or mail it to your local Domino's Pizza.
+Generating options dynamically in PHP
+
+In many (if not most) cases, we will want to automatically generate the list of options based on some data (eg. a set of records retrieved from a database, XML file, or some other source). To simplify, we'll assume the data is already collected in an array.
+
+Basically, there might be two types of arrays that we'll be using to produce the options. The first type is when we're only interested in item names, so we have a non-associative array of strings:
+
+$ingredients = array('Cheese', 'Olives', 'Pepperoni', ...);
+
+The second is when there is some additional information attached to each item, for example a database record ID, and this information is what is really important to us.
+
+$ingredients = array('3' => 'Cheese', '5' => 'Olives', '8' => 'Pepperoni', ...);
+
+In both cases, we can generate the HTML code for the list of choices with a simple foreach loop. To produce a set of checkboxes from a non-associative array (the first type), we do the following:
+
+<? foreach ($ingredients as $ingredient) { ?>
+<input id="<?= $ingredient ?>" type="checkbox" name="ingredients[]" value="<?= $ingredient ?>" />
+ <label for="<?= $ingredient ?>"><?= $ingredient ?></label>
+ <br />
+<? } ?>
+
+And here's the equivalent loop for the associative variant:
+
+<? foreach ($ingredients as $key => $ingredient) { ?>
+<input id="<?= $ingredient ?>" type="checkbox" name="ingredients[]" value="<?= $key ?>" />
+ <label for="<?= $ingredient ?>"><?= $ingredient ?></label>
+ <br />
+<? } ?>
+
+A similar foreach loop could be used to produce a multiple selection list box, or a drop down list for our JavaScript solution.
+Pre-selecting options
+
+We might want to present the user with a set of default, already selected options — say, we notice that the vast majority of our pizza place customers want bacon and green pepper, so we decide to pre-select the two ingredients for them and make their lives easier. We'll put the default options in an array named $selected:
+
+$selected = array('Bacon', 'Green Pepper');
+
+But this is not the only reason why we might want to have some options already selected when the form is displayed. If the user submits a form, and we notice there's some invalid or missing information, we need to display the form again and ask the user to correct the errors. To save the user the frustration of having to enter everything again, we need to fill the form with all the information already provided — in the case of multiple select fields, we need to pre-select the submitted set of options.
+
+If the form has been submitted, we fill $selected with the submitted options. Additionally, we check if there actually are any submitted options, as the user might have not selected anything. If that's the case, $_POST['ingredients'] won't even exist, and we need to make $selected an empty array:
+
+if (isset($_POST['make_order'])) {
+  if (isset($_POST['ingredients']))
+    // Submitted selection
+    $selected = $_POST['ingredients'];
+  else
+    // Nothing selected
+    $selected = array();
+}
+else {
+  // Default selection
+  $selected = array('Bacon', 'Green Pepper');
+}
+
+We then proceed with generating the HTML code for the set of options (checkboxes again). For every item, we use the in_array() function to check if the value is present in the $selected array — if it is, we add a checked attribute to the checkbox. With the non-associative array of options, we use the following foreach loop:
+
+<? foreach ($ingredients as $ingredient) { ?>
+<input id="<?= $ingredient ?>" type="checkbox" name="ingredients[]" value="<?= $ingredient ?>"
+ <?= in_array($ingredient, $selected) ? 'selected="selected"' : '' ?>
+ /><label for="<?= $ingredient ?>"><?= $ingredient ?></label>
+ <br />
+<? } ?>
+
+With the associative array, the code is pretty much the same, except that we need to check if the key ($key) is in the $selected array, not the value ($ingredient):
+
+<? foreach ($ingredients as $ingredient) { ?>
+<input id="<?= $ingredient ?>" type="checkbox" name="ingredients[]" value="<?= $key ?>"
+ <?= in_array($key, $selected) ? 'selected="selected"' : '' ?>
+ /><label for="<?= $ingredient ?>"><?= $ingredient ?></label>
+ <br />
+<? } ?>
+
+We can generate a multiple selection list box in a similar fashion. Unfortunately, we'll have a slight problem with our pretty JavaScript method. We surely can generate a list of items with a foreach loop:
+
+<ul>
+<? foreach ($ingredients as $ingredient) {
+     if (in_array($ingredient, $selected)) { ?>
+   <li onclick="this.parentNode.removeChild(this);">
+    <input type="hidden" name="ingredients[]" value="<?= $ingredient ?>" />
+    Cheese
+   </li>
+<?   }
+   } ?>
+</ul>
+<select onchange="selectIngredient(this);">
+ ...
+</select>
+
+However, the $selected array might be empty. This would lead to generating an empty <ul> element, which is not valid HTML. We're good people and we want our HTML to be valid, so we have to do something about it.
+
+We'll modify our code to check if the $selected array is empty, and if it is, we'll simply not generate the unordered list at all:
+
+<? if (count($selected) > 0) { ?>
+  <ul>
+<?   foreach ($ingredients as $ingredient) {
+       if (in_array($ingredient, $selected)) { ?>
+     <li onclick="this.parentNode.removeChild(this);">
+      <input type="hidden" name="ingredients[]" value="<?= $ingredient ?>" />
+      Cheese
+     </li>
+<?     }
+     } ?>
+  </ul>
+<? } ?>
+<select onchange="selectIngredient(this);">
+ ...
+</select>
+
+But that's not all. If $selected is empty and there's no <ul>, our precious JavaScript code that adds new items to the list will no longer work (for the simple reason that there would be no list to add to). To fix this, we need to add a few lines of code to the selectIngredient() function to check if the list exists, and if it does not, create it on the fly.
+
+function selectIngredient(select)
+{
+  var option = select.options[select.selectedIndex];
+  var ul = select.parentNode.getElementsByTagName('ul')[0];
+  
+  if (!ul) {
+    ul = document.createElement("ul");
+    select.parentNode.insertBefore(ul, select);
+  }
+     
+  var choices = ul.getElementsByTagName('input');
+  ...
+}
+
+Now, we no longer need to fear the empty $selected array.
+
+More to follow. Stay tuned. 

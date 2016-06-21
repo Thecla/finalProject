@@ -1,0 +1,5 @@
+while($get_row=mysqli_fetch_array($result)){
+	$sub=$get_row['price']*$value;
+	//$total +=$sub;
+	echo $get_row['product_name'].' x '.$value.' @ &pound; '.number_format($get_row['price'],2).' = &pound; '.$sub.' <a href="carttest.php?remove='.$id.'">[-]</a> <a href="carttest.php?add='.$id.'">[+]</a> <a href="carttest.php?delete='.$id.'">[Delete]</a> <br />';
+	

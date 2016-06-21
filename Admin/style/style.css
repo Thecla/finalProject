@@ -1,0 +1,229 @@
+/* http://meyerweb.com/eric/tools/css/reset/ 
+   v2.0 | 20110126
+   License: none (public domain)
+*/
+
+html, body, div, span, applet, object, iframe,
+h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+a, abbr, acronym, address, big, cite, code,
+del, dfn, em, img, ins, kbd, q, s, samp,
+small, strike, strong, sub, sup, tt, var,
+b, u, i, center,
+dl, dt, dd, ol, ul, li,
+fieldset, form, label, legend,
+table, caption, tbody, tfoot, thead, tr, th, td,
+article, aside, canvas, details, embed, 
+figure, figcaption, footer, header, hgroup, 
+menu, nav, output, ruby, section, summary,
+time, mark, audio, video {
+	margin: 0;
+	padding: 0;
+	border: 0;
+	vertical-align: baseline;
+}
+/* HTML5 display-role reset for older browsers */
+article, aside, details, figcaption, figure, 
+footer, header, hgroup, menu, nav, section {
+	display: block;
+}
+
+body{ background:#f2f2f2; }
+
+.main_wrapper{ width:1000px;
+				height:auto;
+				margin:auto;
+				margin-top:20px;
+				}
+
+.header{ width:1000px; 
+			height:100px;
+			margin:auto; 
+			background:white;
+			padding-top:20px;
+			padding-bottom:20px;
+			}
+#logo{ float:left; }
+#banner{ float: right; }
+.menubar{
+			width:1000px;
+			height:50px;
+			background:#009999;
+			padding-top:5px;
+}
+#menu{
+		padding:0;
+		margin:0;
+		line-height:40px;
+		float:left;
+		
+}
+#menu li{
+		list-style:none;
+		display:inline;
+		margin:5px;
+							
+}
+#menu a{
+		text-decoration:none;
+		color:white;
+		padding:8px;
+		margin: 5px;	
+		font-family:Tahoma;
+		font-size:15px;
+}
+#menu a:hover{
+		color:orange;
+		font-weight: bolder;
+		text-decoration: underline;
+}
+#form{
+		float:right;
+		padding-right:10px;
+		line-height:50px;
+}
+.content_wrapper{ 
+			width:1000px; 
+			height:auto; 
+			margin:auto;
+			background:white; }
+
+#content_area{ width:800px;
+				height:auto;
+				float:right; 
+				background:white; }
+
+#sidebar{ width:200px; 
+		  height:771px; 
+		  background:#009999; 
+		  float:left; }
+#sidebar_title{
+		background:white;
+		color:black;
+		font-size:25px;
+		font-family:Tahoma;
+		text-align:center;
+		  }
+		  #cats{
+			padding:0;
+			text-align:center;
+			
+		  }
+		  #cats li{
+		  list-style:none;
+		  margin:5px;
+		  border:2px solid white;
+		  padding:10px;
+		   }
+		  #cats a{
+		  color: white;
+		  padding:20px;
+		  margin:20px;
+		  text-decoration:none;
+		  font-size:20px;
+		  font-family; Tahoma;
+		  }
+		  #cats a:hover{ color:orange;font-weight:bolder; text-decoration:underline;
+		  }
+		  #admin{ width:730; height:100px; border:1px solid grey;}
+#products_box{
+		width:730px;
+		height:auto;
+		text-align:center;
+		margin-left:1px;
+		margin-top:30px;
+		margin:30px;
+		padding:30px;
+}
+#products_box li{ border:1px solid skyblue; padding:30px; margin:10px;display:inline;
+text-decoration:none}
+#section_two{
+		width:730px;
+		height:auto;
+		text-align:center;
+		margin-left:1px;
+		margin-top:30px;
+		margin:30px;
+		padding:30px;
+}
+#section_two li{ border:1px solid skyblue; padding:30px; margin:10px;display:inline;
+text-decoration:none}
+
+#single_product{
+			border:2px solid grey;
+}
+#department{width:780; height:50px; background:#4d4d4d; color:white;margin-bottom:20px;}
+#department li{display:inline; text-decoration:none; font-size:30px; padding-left:50px;padding-right:30px;padding-top:0px;padding-bottom:10px;
+			background:#4d4d4d; border:2px solid grey; margin-right:20px;
+}
+#department a{ color:white; text-decoration:none;}
+#register { width:798px; height:auto; padding-bottom:20px; margin-left:1px; margin-top:0px; border:2px solid grey; 
+font-size:20px; text-align:center }
+td, th{border: 1px solid grey; padding: 0.5rem; color:black;} 
+table{border-collapse: collapse;}
+
+form1 {
+  border: 1px solid #c6c7cc;
+  border-radius: 5px;
+  font: 14px/1.4 "Helvetica Neue", Helvetica, Arial, sans-serif;
+  overflow: hidden;
+  width: 600px;
+  margin-left:100px;
+  margin:30px;  
+}
+fieldset {
+  border: 0;
+  margin: 10px;
+  padding: 0;
+}
+input {
+  border-radius: 5px;
+  font: 20px/1.4 "Helvetica Neue", Helvetica, Arial, sans-serif;
+  margin: 0;
+}
+.account-info {
+  padding: 20px 20px 0 20px;
+}
+.account-info label ,p{
+  color: #395870;
+  display: ;
+  font-weight: bold;
+  margin-top: 10px;
+  padding:0px;
+  font-size:20px;
+  text-align:left;
+}
+.account-info input {
+  background: #fff;
+  border: 1px solid #c6c7cc;
+   box-shadow: inset 0 1px 1px rgba(0, 0, 0, .1);
+  color: #636466;
+  padding: 6px;
+  margin-top: 6px;
+  width: 100%;
+}
+.account-action {
+  background: #f0f0f2;
+  border-top: 1px solid #c6c7cc;
+  padding: 20px;
+  
+}
+.account-action .btn {
+  background: linear-gradient(#49708f, #293f50);
+  border: 0;
+  color: #fff;
+  cursor: pointer;
+  font-weight: bold;
+  float: center;
+  padding: 8px 16px;
+  
+}
+#menubar1{
+	background: url(images/nurse.jpg);
+	height:400px;
+	width:400px;
+}
+
+#footer{ width:1000px;
+		  height:100px; 
+		  background: #4d4d4d; 
+		  clear: both; }

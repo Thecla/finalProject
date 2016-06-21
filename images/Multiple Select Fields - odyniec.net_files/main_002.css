@@ -1,0 +1,15 @@
+div#header {
+  background: #fda602;
+}
+
+div#header h1 {
+  background: -ms-linear-gradient(top,
+    #fda602 0%, #d78d01 38%, #b17401 38%, #e39501 83%, #fda602 100%);
+  background: -moz-linear-gradient(top,
+    #fda602 0%, #d78d01 38%, #b17401 38%, #e39501 83%, #fda602 100%);
+  background: -o-linear-gradient(top,
+    #fda602 0%, #d78d01 38%, #b17401 38%, #e39501 83%, #fda602 100%);
+  background: -webkit-gradient(linear, 0 0, 0 100%,
+    color-stop(0%, #fda602), color-stop(38%, #d78d01), color-stop(38%, #b17401),
+    color-stop(83%, #e39501), color-stop(100%, #fda602));
+}
